@@ -92,7 +92,23 @@ body {
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
-
+<script>
+document.querySelector('meta[name="viewport"]').content += ', viewport-fit=cover';
+window.rivenoaCanvasMetrics = () => {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) return '';
+  let probe = document.getElementById('safe-area-probe');
+  if (!probe) {
+    probe = document.createElement('div');
+    probe.id = 'safe-area-probe';
+    probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+    document.body.appendChild(probe);
+  }
+  const bounds = canvas.getBoundingClientRect();
+  const padding = getComputedStyle(probe);
+  return JSON.stringify([bounds.width, bounds.height, ...['paddingLeft','paddingTop','paddingRight','paddingBottom'].map(key => parseFloat(padding[key]) || 0)]);
+};
+</script>
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -111,7 +127,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":19136,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23680,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
