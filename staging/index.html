@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rivenoa staging</title>
-<p id="status">Loading the latest Rivenoa staging build…</p>
+<title>리베노아 테스트판</title>
+<p id="status">리베노아 최신 테스트판을 불러오는 중…</p>
 <script>
 (async () => {
   const response = await fetch('./build.json?t=' + Date.now(), {cache: 'no-store'});
@@ -12,7 +12,7 @@
   if (!/^[0-9a-f]{40}$/.test(build.source_sha)) throw new Error('Invalid build SHA');
   location.replace('./rivenoa-' + build.source_sha + '.html');
 })().catch(() => {
-  document.getElementById('status').textContent = 'Staging build unavailable. Reload to retry.';
+  document.getElementById('status').textContent = '테스트판을 불러오지 못했습니다. 새로고침해서 다시 시도하세요.';
 });
 </script>
 </html>
