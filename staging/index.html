@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>리베노아 테스트판</title>
 <p id="status">리베노아 최신 테스트판을 불러오는 중…</p>
@@ -10,7 +11,23 @@
   if (!response.ok) throw new Error('Build manifest unavailable');
   const build = await response.json();
   if (!/^[0-9a-f]{40}$/.test(build.source_sha)) throw new Error('Invalid build SHA');
-  location.replace('./rivenoa-' + build.source_sha + '.html');
+  const target = new URL('./rivenoa-' + build.source_sha + '.html', location.href);
+  const callback = new URL(location.href);
+  const params = new URLSearchParams();
+  for (const key of ['code', 'flow', 'error', 'error_code']) {
+    const value = callback.searchParams.get(key);
+    if (value) params.set(key, value);
+  }
+  if (new URLSearchParams(callback.hash.slice(1)).has('error')) {
+    params.set('error', 'authentication_failed');
+  }
+  if (params.size) {
+    sessionStorage.setItem('rivenoa-auth-callback', JSON.stringify({path: target.pathname, params: params.toString()}));
+  } else {
+    sessionStorage.removeItem('rivenoa-auth-callback');
+  }
+  history.replaceState(null, '', callback.pathname);
+  location.replace(target);
 })().catch(() => {
   document.getElementById('status').textContent = '테스트판을 불러오지 못했습니다. 새로고침해서 다시 시도하세요.';
 });
