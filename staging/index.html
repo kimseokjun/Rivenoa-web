@@ -12,21 +12,8 @@
   const build = await response.json();
   if (!/^[0-9a-f]{40}$/.test(build.source_sha)) throw new Error('Invalid build SHA');
   const target = new URL('./rivenoa-' + build.source_sha + '.html', location.href);
-  const callback = new URL(location.href);
-  const params = new URLSearchParams();
-  for (const key of ['code', 'flow', 'error', 'error_code']) {
-    const value = callback.searchParams.get(key);
-    if (value) params.set(key, value);
-  }
-  if (new URLSearchParams(callback.hash.slice(1)).has('error')) {
-    params.set('error', 'authentication_failed');
-  }
-  if (params.size) {
-    sessionStorage.setItem('rivenoa-auth-callback', JSON.stringify({path: target.pathname, params: params.toString()}));
-  } else {
-    sessionStorage.removeItem('rivenoa-auth-callback');
-  }
-  history.replaceState(null, '', callback.pathname);
+  sessionStorage.removeItem('rivenoa-auth-callback');
+  history.replaceState(null, '', location.pathname);
   location.replace(target);
 })().catch(() => {
   document.getElementById('status').textContent = '테스트판을 불러오지 못했습니다. 새로고침해서 다시 시도하세요.';
