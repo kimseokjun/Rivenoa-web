@@ -90,8 +90,8 @@ body {
 	z-index: 1;
 }
 		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.icon.png" />
-<link rel="apple-touch-icon" href="rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.icon.png" />
+<link rel="apple-touch-icon" href="rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.apple-touch-icon.png"/>
 <script>
 document.querySelector('meta[name="viewport"]').content += ', viewport-fit=cover';
 window.rivenoaCanvasMetrics = () => {
@@ -107,6 +107,19 @@ window.rivenoaCanvasMetrics = () => {
   const bounds = canvas.getBoundingClientRect();
   const padding = getComputedStyle(probe);
   return JSON.stringify([bounds.width, bounds.height, ...['paddingLeft','paddingTop','paddingRight','paddingBottom'].map(key => parseFloat(padding[key]) || 0)]);
+};
+window.rivenoaMobileDevice = () => {
+  const ua = navigator.userAgent;
+  return navigator.userAgentData?.mobile === true || /Android|iPhone|iPad|iPod|Mobile/i.test(ua) ||
+    (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+};
+window.rivenoaCanRequestLandscape = () => Boolean(document.fullscreenEnabled && screen.orientation?.lock);
+window.rivenoaRequestLandscape = async () => {
+  if (!window.rivenoaCanRequestLandscape()) return;
+  try {
+    if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    await screen.orientation.lock('landscape');
+  } catch (_) { /* The in-game rotation guide remains available. */ }
 };
 document.addEventListener('DOMContentLoaded', () => {
   const notice = document.getElementById('status-notice');
@@ -130,14 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
 
-		<script src="rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.js"></script>
+		<script src="rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5","experimentalVK":false,"fileSizes":{"rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.pck":6599532,"rivenoa-db70b0b5f2f9a1bb66c8c9ea2f8d92fe2417fea5.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264","experimentalVK":false,"fileSizes":{"rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.pck":6606140,"rivenoa-e61a047ff34fef557b446fb05fced38f9dd2c264.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
